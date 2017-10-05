@@ -1,0 +1,39 @@
+
+--Enabling properties for using transcations
+
+
+hive>set hive.support.concurrency = true;
+ 
+hive>set hive.enforce.bucketing = true;
+ 
+hive>set hive.exec.dynamic.partition.mode = nonstrict;
+ 
+hive>set hive.txn.manager = org.apache.hadoop.hive.ql.lockmgr.DbTxnManager;
+ 
+hive>set hive.compactor.initiator.on = true;
+ 
+hive>set hive.compactor.worker.threads = 1;
+
+
+--Creating a Table That Supports Hive Transactions
+
+CREATE TABLE college(clg_id int,clg_name string,clg_loc string) clustered by (clg_id) into 5 buckets stored as orc TBLPROPERTIES('transactional'='true');
+
+
+
+--Inserting Data into a Hive Table
+	
+INSERT INTO table college values(1,'Hmr','nlr'),(2,'TPU','vlr'),(3,'GreatLakes','chen'),(4,'IIT','del'),(5,'oxford','uk'),(6,'JNU','atp'),(7,'cambridge','us');
+
+
+
+--Updating the Data in Hive Table
+
+UPDATE college set clg_name = 'DT' where clg_id = 6;
+
+
+
+--Deleting a Row from Hive Table
+	
+delete from college where clg_id=1;
+
